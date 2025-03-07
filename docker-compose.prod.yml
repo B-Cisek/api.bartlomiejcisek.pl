@@ -3,6 +3,8 @@ services:
     build:
       context: .
       target: production
+    env_file:
+      - .env
     networks:
       - traefik
     restart: unless-stopped
@@ -15,12 +17,16 @@ services:
     build:
       context: .
       target: production
+    env_file:
+      - .env
     command: [ "php", "/var/www/html/artisan", "queue:work", "--tries=3" ]
     stop_signal: SIGTERM # Set this for graceful shutdown if you're using fpm-apache or fpm-nginx
     healthcheck:
       # This is our native healthcheck script for the queue
       test: [ "CMD", "healthcheck-queue" ]
       start_period: 10s
+    networks:
+      - traefik
 
 networks:
   traefik:
