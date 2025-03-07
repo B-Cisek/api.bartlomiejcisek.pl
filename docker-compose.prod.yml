@@ -1,0 +1,27 @@
+services:
+  app:
+    build:
+      context: .
+      target: production
+    networks:
+      - traefik
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.app-capture-live.rule=Host(`api.bartlomiejcisek.pl`)
+      - traefik.http.routers.app-capture-live.entrypoints=web
+
+  queue:
+    build:
+      context: .
+      target: production
+    command: [ "php", "/var/www/html/artisan", "queue:work", "--tries=3" ]
+    stop_signal: SIGTERM # Set this for graceful shutdown if you're using fpm-apache or fpm-nginx
+    healthcheck:
+      # This is our native healthcheck script for the queue
+      test: [ "CMD", "healthcheck-queue" ]
+      start_period: 10s
+
+networks:
+  traefik:
+    external: true
