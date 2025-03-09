@@ -12,6 +12,8 @@ services:
       - traefik.enable=true
       - traefik.http.routers.app-capture-live.rule=Host(`api.bartlomiejcisek.pl`)
       - traefik.http.routers.app-capture-live.entrypoints=web
+    volumes:
+      - sqlite_data:/var/www/html/database
 
   queue:
     build:
@@ -19,6 +21,7 @@ services:
       target: production
     env_file:
       - .env
+    restart: unless-stopped
     command: [ "php", "/var/www/html/artisan", "queue:work", "--tries=3" ]
     stop_signal: SIGTERM # Set this for graceful shutdown if you're using fpm-apache or fpm-nginx
     healthcheck:
@@ -27,6 +30,11 @@ services:
       start_period: 10s
     networks:
       - traefik
+    volumes:
+      - sqlite_data:/var/www/html/database
+
+volumes:
+  sqlite_data:
 
 networks:
   traefik:
