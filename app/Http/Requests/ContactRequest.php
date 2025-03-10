@@ -14,6 +14,7 @@ class ContactRequest extends FormRequest
             'name' => ['required', 'max:60', 'string'],
             'email' => ['required', 'email:filter', 'max:120'],
             'message' => ['required', 'string', 'max:1000'],
+            'recaptcha_token' => ['required', 'string'],
         ];
     }
 }
