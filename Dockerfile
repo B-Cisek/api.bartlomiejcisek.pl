@@ -26,7 +26,7 @@ USER www-data
 # calling any of that permission stuff
 FROM base AS production
 
-COPY ./.docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+#COPY ./.docker/nginx/default.conf /etc/nginx/conf.d/default.conf
 
 # Copy our app files as www-data (33:33)
 COPY --chown=www-data:www-data . /var/www/html

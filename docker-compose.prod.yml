@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     labels:
       - traefik.enable=true
-      - traefik.http.routers.app-capture-live.rule=Host(`api.bartlomiejcisek.pl`)
+      - traefik.http.routers.app-capture-live.rule=Host(`${TRAEFIK_HOST}`)
       - traefik.http.routers.app-capture-live.entrypoints=web
     volumes:
       - sqlite_data:/var/www/html/database
