@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { EmailService } from "./services/email.service";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
@@ -14,6 +15,13 @@ const contactSchema = z.object({
 });
 
 const app = new Hono();
+
+app.use(
+  "*",
+  cors({
+    origin: process.env.FRONTEND_HOST || "http://localhost:5173",
+  })
+);
 
 app.get("/api", (c) => {
   return c.json({ status: "ok" });
