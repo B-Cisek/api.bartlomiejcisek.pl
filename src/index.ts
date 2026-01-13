@@ -2,10 +2,10 @@ import "dotenv/config";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { EmailService } from "./services/email.service";
+import { EmailService } from "./services/email.service.js";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { verifyRecaptcha } from "./services/recaptcha.service";
+import { verifyRecaptcha } from "./services/recaptcha.service.js";
 
 const contactSchema = z.object({
   name: z.string().min(1),
