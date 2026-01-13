@@ -1,13 +1,15 @@
 export async function verifyRecaptcha(token: string): Promise<boolean> {
+  const params = new URLSearchParams({
+    secret: process.env.RECAPTCHA_SECRET_KEY as string,
+    response: token,
+  });
+
   const response = await fetch(process.env.RECAPTCHA_VERIFY_URL as string, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    body: JSON.stringify({
-      secret: process.env.RECAPTCHA_SECRET_KEY as string,
-      response: token,
-    }),
+    body: params.toString(),
   });
 
   if (!response.ok) {
